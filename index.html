@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html lang="pt-Br">
+ 
+  <head>
+    <link href='https://fonts.googleapis.com/css?family=Press Start 2P' rel='stylesheet'>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8">
+    <script src="./js/mapa/map.js"></script>  
+    <script src="./js/mapa/rendermap.js"></script> 
+    <script src="./js/controll.js"></script>  
+    <script src="./js/players/player.js"></script> 
+    <script src="./js/players/enemys.js"></script>
+    <script src="./js/players/background.js"></script> 
+    <script src="./js/players/UI.js"></script> 
+    <script src="./js/players/item.js"></script> 
+    
+    <script src="./js/index.js" defer></script> 
+    <title>V2.0 AUTOMOTIVA</title>
+    <script>   
+        //link : https://youtu.be/_q_Zk9nE1P0
+        var janela = document.documentElement;
+          
+        window.addEventListener('resize', checarFullScreen);
+        function loadPage(){
+    
+        document.getElementById("hover").volume = 0.1; 
+        document.getElementById("musicaMenu").volume = 0.1; 
+    
+        }
+        function hoverMusica(){
+        document.getElementById("hover").currentTime = 0;
+        document.getElementById("hover").play();
+        }
+    
+        function musicaMenu() { 
+        if(!document.getElementById("musicaMenu").paused){
+        document.getElementById("musicaMenu").pause();
+        document.getElementById("sliderMusica").value = 0;
+        document.getElementById("volumeMusica").innerHTML = 0;
+        document.getElementById("musicaMenu").volume = 0;
+        document.getElementById("opcoesMusica").innerHTML = 'Resumir'
+        }
+        else
+        {
+        document.getElementById("musicaMenu").play();
+        document.getElementById("sliderMusica").value = 50;
+        document.getElementById("volumeMusica").innerHTML = 50;
+        document.getElementById("musicaMenu").volume = 0.5;
+        document.getElementById("opcoesMusica").innerHTML = 'Pausar'
+        }}
+    
+        function efeitoMenu() { 
+        if((document.getElementById("opcoesEfeito").innerHTML == "Pausar")){
+        document.getElementById("hover").volume = 0;
+        document.getElementById("opcoesEfeito").innerHTML = 'Resumir'
+        }else {
+        document.getElementById("hover").volume = 0.1
+        document.getElementById("opcoesEfeito").innerHTML = 'Pausar'
+        }}
+    
+        function checarFullScreen() {
+         if (screen.height == window.innerHeight) {
+          document.getElementById("opcoesFullcream").innerHTML = 'Janela'
+         }else{
+           document.getElementById("opcoesFullcream").innerHTML = 'Fullscream'
+         }
+        }
+    
+        function atualizarVolume(){
+          document.getElementById("musicaMenu").volume = (document.getElementById("sliderMusica").value)/100;
+          document.getElementById("volumeMusica").innerHTML = Math.floor(document.getElementById("musicaMenu").volume*100) 
+        }
+    
+        function telaCheia(){
+          if (!document.fullscreenElement){
+          janela.requestFullscreen();
+          } else {
+          document.exitFullscreen();  
+          }
+        }
+    
+        function mudarMenu(estadoMenu){
+          switch(estadoMenu) {
+          case 1 :
+          document.getElementById("caixamenu").style.display = "flex";
+          document.getElementById("caixaopcões").style.display = "none"; 
+          document.getElementById("caixacreditos").style.display = "none";
+          document.getElementById("caixajogo").style.display = "none"; 
+          document.getElementById("caixainstruçoes").style.display = "none"; 
+          paused = true;
+          break;
+          case 2 :
+          document.getElementById("caixaopcões").style.display = "flex"; 
+          document.getElementById("caixamenu").style.display = "none"; 
+          document.getElementById("caixacreditos").style.display = "none";
+          break;
+          case 3 :
+          document.getElementById("caixacreditos").style.display = "flex";
+          document.getElementById("caixaopcões").style.display = "none"; 
+          document.getElementById("caixamenu").style.display = "none";
+          break;
+          case 4 :
+          document.getElementById("caixamenu").style.display = "none"; 
+          document.getElementById("caixajogo").style.display = "flex";
+          document.getElementById("caixainstruçoes").style.display = "none"; 
+          paused = false;
+          break;  
+          case 5 :
+          document.getElementById("caixamenu").style.display = "none"; 
+          document.getElementById("caixajogo").style.display = "none";
+          document.getElementById("caixainstruçoes").style.display = "flex"; 
+          break;
+        }
+        }
+      
+        </script>
+</head>
+<body class="menu" onload="loadPage(); mudarMenu(1)" allowfullscreen>
+    
+    <audio autoplay id="musicaMenu">
+      <source src=".\Musica\Someday.WAV" type="audio/WAV"></source>
+    </audio>
+    <audio id="hover">
+      <source src=".\Musica\click menu.mp3" type="audio/mp3" ></source>
+    </audio>    
+    
+    <div class="conteiner" style="position: relative;justify-content: center;"id="caixajogo">
+      <!---top site--->
+      <div style="position: absolute;display: flex;">
+        
+          <div style="background-color: #78716C; height: 99vh; width: 99vw;">
+            
+            <button onmouseenter="hoverMusica()" onclick='mudarMenu(1) ' class="caixadomenu-menu" style="width: 100px;height:100px;position: relative;left: 95vw;background-size: cover;background-image: url(./data/menu/Menuconfig.png);"></button>
+          
+        </div>
+                  
+      </div> 
+      <canvas style="position: relative;"></canvas>
+  </div>
+     
+    <div class="conteiner" id="caixamenu" style="display: block;">
+        <main>
+          <div class="caixadomenu">
+            <button onclick='mudarMenu(4)' class="caixadomenu-menu" onmouseenter="hoverMusica()" id="menuStart">Novo Jogo</button>
+            <button onclick='mudarMenu(2)' onmouseenter="hoverMusica()" class="caixadomenu-menu" id="menuOpçoes">Opçãoes</button>
+            <button onclick='mudarMenu(3)' onmouseenter="hoverMusica()" class="caixadomenu-menu"  id="menuCreditos">Creditos</button>
+            <button onclick='mudarMenu(5)'class="caixadomenu-menu" onmouseenter="hoverMusica()">Instruções</button>
+            <img src="data\menu\gato.gif" style="width: 60px;height:60px;">
+          </div>
+        </main>
+       </div>  
+
+
+       <div class="conteiner" id="caixaopcões" style="display: block;">
+        <main>
+          <div class="caixadomenu">
+            <button onclick="telaCheia()" onmouseenter="hoverMusica()" class="caixadomenu-opçoes" id="opcoesFullcream">Fullcream</button>
+            <h1 class="caixadomenu-txt">Musica</h1>
+            <button class="caixadomenu-opçoes" onmouseenter="hoverMusica()" onclick="musicaMenu()" id="opcoesMusica">Pausar</button>
+            <input onchange="atualizarVolume()" type="range" min="0" max="100" value="50" class="slider-opçoes" id="sliderMusica">
+            <h1 class="caixadomenu-txt" id="volumeMusica">50</h1>
+            <h1 class="caixadomenu-txt">Efeitos</h1>
+            <button class="caixadomenu-opçoes" onmouseenter="hoverMusica()" onclick="efeitoMenu()" id="opcoesEfeito">Pausar</button>
+            <button class="caixadomenu-opçoes" onmouseenter="hoverMusica()" onclick='mudarMenu(1)'>Voltar</button>
+          </div>
+        </main>
+       </div>
+       
+       
+       <div class="conteiner" id="caixacreditos" style="display: block;">
+        <main>
+          <div class="caixadomenu">
+            <h1 class="caixadomenu-txt">Creditos:</h1>
+            <h1 class="caixadomenu-txt">Autor:</h1>
+            <h1 class="caixadomenu-txt">Rinaldo</h1>
+            <img src=".\data\rinaldo.jpg" style="height: 150px;"></img>
+            <h1 class="caixadomenu-txt">Educador:</h1>
+            <img src=".\data\aquiles.jpg" style="height: 150px;"></img>
+            <button class="caixadomenu-opçoes" onmouseenter="hoverMusica()" onclick='mudarMenu(1)'>Voltar</button>
+          </div>
+        </main>
+       </div>
+       
+       
+       <div class="conteiner" id="caixainstruçoes" style="display: block;">
+        <main>
+          <div class="caixadomenu">
+            <h1 class="caixadomenu-txt">Instruçoes:</h1>
+            <h1 class="caixadomenu-txt">Não fasso ideia</h1>
+            <button class="caixadomenu-opçoes" onmouseenter="hoverMusica()" onclick='mudarMenu(1)'>Voltar</button>
+          </div>
+        </main>
+       </div>  
+  </body>
+</html>
+
